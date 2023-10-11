@@ -1,15 +1,9 @@
 import MenuBuilder.ConsoleMenuBuilder;
-import actions.Arrays.ConcatAndSort;
-import actions.Arrays.FindMaxMin;
-import actions.Arrays.OutputDuplicates;
-import actions.Arrays.ReversArray;
-import actions.DoWhile.InputPassword;
-import actions.DoWhile.RandomFrom1To100;
-import actions.ForEach.OutColors;
-import actions.ForEach.OutStringByChar;
+import actions.Arrays.*;
+import actions.DoWhile.*;
+import actions.ForEach.*;
 import actions.forLoop.*;
-import actions.whileLoop.InputName;
-import actions.whileLoop.InputNumber;
+import actions.whileLoop.*;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
