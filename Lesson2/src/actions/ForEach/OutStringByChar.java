@@ -15,7 +15,7 @@ public class OutStringByChar extends AbstractAction {
         for (char ch: inputStrChars) {
             System.out.println(ch);
         }
-        int len = inputPsw.length() + 1;
+        int len = inputPsw.length();
         System.out.println("length = " + len);
     }
 }
