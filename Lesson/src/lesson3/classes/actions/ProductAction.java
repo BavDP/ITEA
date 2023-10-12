@@ -5,13 +5,12 @@ import MenuBuilder.ConsoleMenuBuilder;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 class Product {
     private String name;
-    private double price = 0;
-    private int amount = 0;
+    private double price;
+    private int amount;
 
     public Product(String name, double price, int amount) {
         this.name = name;
@@ -58,9 +57,7 @@ public class ProductAction extends AbstractAction {
         public void doAction() {
             System.out.print("Common price: ");
             var wrapper = new Object() { double sum; };
-            products.forEach(product -> {
-                wrapper.sum += product.commonPrice();
-            });
+            products.forEach(product -> wrapper.sum += product.commonPrice());
             System.out.println(wrapper.sum);
         }
     }
