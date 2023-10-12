@@ -77,7 +77,7 @@ class Book {
 public class BookAction extends AbstractAction {
 
     private final ArrayList<Book> books = new ArrayList<>();
-    public class AddNewBook extends AbstractAction {
+    private class AddNewBook extends AbstractAction {
         public void doAction() {
             Scanner sc = new Scanner(System.in);
             System.out.print("Book title: ");
@@ -97,7 +97,7 @@ public class BookAction extends AbstractAction {
         }
     }
 
-    public class ViewAllBooks extends AbstractAction {
+    private class ViewAllBooks extends AbstractAction {
         public void doAction() {
             books.forEach((book -> {
                 System.out.println("*********************************************");
