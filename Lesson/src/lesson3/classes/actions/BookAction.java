@@ -76,7 +76,7 @@ class Book {
 }
 public class BookAction extends AbstractAction {
 
-    private ArrayList<Book> books = new ArrayList<>();
+    private final ArrayList<Book> books = new ArrayList<>();
     public class AddNewBook extends AbstractAction {
         public void doAction() {
             Scanner sc = new Scanner(System.in);

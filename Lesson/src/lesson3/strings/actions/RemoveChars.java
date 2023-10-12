@@ -15,6 +15,6 @@ public class RemoveChars extends AbstractAction {
                 break;
             }
         }
-        System.out.println("Result: " + buffer.toString());
+        System.out.println("Result: " + buffer);
     }
 }
