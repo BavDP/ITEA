@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 public class SplitStrings extends AbstractAction {
     public void doAction() {
         Scanner sc = new Scanner(System.in);
-        System.out.print("Input string #1: ");
+        System.out.print("Input string: ");
         String str = sc.nextLine();
         StringTokenizer tokenizer = new StringTokenizer(str);
         System.out.println("Result: ");
