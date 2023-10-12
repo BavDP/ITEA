@@ -95,7 +95,7 @@ public class BankAccountAction extends AbstractAction {
     public void doAction() {
         System.out.println("Bank account");
         ConsoleMenuBuilder bookMenu = new ConsoleMenuBuilder("Bank Account")
-                .AddMenuItem("1", "Add New Book", new BankAccountAction.CreateNewBankAccount())
+                .AddMenuItem("1", "Add New bank account", new BankAccountAction.CreateNewBankAccount())
                 .AddMenuItem("2", "Refill account", new BankAccountAction.Refill())
                 .AddMenuItem("3", "Withdraw account", new BankAccountAction.Withdraw())
                 .AddMenuItem("0", "Exit", null, true);
