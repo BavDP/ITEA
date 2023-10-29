@@ -11,7 +11,7 @@ public class SubMenuBuilder {
 
         return new ConsoleMenuBuilder(prnTitle)
                 .AddMenuItem("1", GENERICS, lesson5.generics.SubMenuBuilder.getMenu(prnTitle + " -> " + GENERICS), false)
-                .AddMenuItem("2", ABSTRACTCLASS, new AnonymousShapeAction())
+                .AddMenuItem("2", ABSTRACTCLASS, lesson5.abstractClass.SubMenuBuilder.getMenu(prnTitle + " -> " + GENERICS), false)
                 .AddMenuItem("0", "Go to previous menu", null, true);
     }
 }
