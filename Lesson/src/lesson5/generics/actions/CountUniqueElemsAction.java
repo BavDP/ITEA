@@ -1,17 +1,20 @@
 package lesson5.generics.actions;
 
 import MenuBuilder.AbstractAction;
-import lesson5.generics.CompareValue;
 
-class ObjectForCountUniqueTask implements CompareValue {
+import java.util.Arrays;
+import java.util.Scanner;
+
+class ObjectForCountUniqueTask implements Comparable<ObjectForCountUniqueTask> {
     int val;
     public ObjectForCountUniqueTask(int val) {
         this.val = val;
     }
 
     @Override
-    public int toCompareValue() {
-        return val;
+    public int compareTo(ObjectForCountUniqueTask o) {
+        if (o == this) return 0;
+        return (o.val == this.val) ? 0 : (this.val - o.val > 0) ? 1 : -1;
     }
 
     @Override
@@ -21,13 +24,12 @@ class ObjectForCountUniqueTask implements CompareValue {
 }
 
 public class CountUniqueElemsAction extends AbstractAction {
-    private <T extends CompareValue> int countUniqueElems(T[] list) {
+    private <T extends Comparable<T>> int countUniqueElems(T[] list) {
         int res = 0;
-        StringBuilder acc = new StringBuilder(",");
         for (int i = 0; i < list.length - 2; i++) {
             boolean f = false;
             for (int j=i+1; j < list.length - 1; j++) {
-                if (list[i].toCompareValue() == list[j].toCompareValue()) {
+                if (list[i].compareTo(list[j]) == 0) {
                     f = true;
                     break;
                 }
@@ -40,18 +42,13 @@ public class CountUniqueElemsAction extends AbstractAction {
     }
     @Override
     public void doAction() {
-        ObjectForCountUniqueTask[] data = {
-                new ObjectForCountUniqueTask(5),
-                new ObjectForCountUniqueTask(15),
-                new ObjectForCountUniqueTask(25),
-                new ObjectForCountUniqueTask(6),
-                new ObjectForCountUniqueTask(6),
-                new ObjectForCountUniqueTask(5),
-                new ObjectForCountUniqueTask(1),
-                new ObjectForCountUniqueTask(2),
-                new ObjectForCountUniqueTask(3),
-
-        };
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter integers, separating by space: ");
+        String values = sc.nextLine();
+        // из строки чисел, разделенных пробелом, создаем массив ObjectForCountUniqueTask[]
+        ObjectForCountUniqueTask[] data = Arrays.stream(values.split(" "))
+                .map(elem -> new ObjectForCountUniqueTask(Integer.parseInt(elem)))
+                .toArray(ObjectForCountUniqueTask[]::new);
         System.out.println(countUniqueElems(data));
     }
 }
