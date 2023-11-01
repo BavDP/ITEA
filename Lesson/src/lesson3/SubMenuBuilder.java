@@ -4,11 +4,11 @@ import MenuBuilder.ConsoleMenuBuilder;
 
 public class SubMenuBuilder {
     static public ConsoleMenuBuilder getMenu(String prnTitle) {
-        final String STRING_TASKSS = "Strings tasks";
-        final String CLASS_TASKS = "Class tasks";
+        final String STRINGS = "Strings tasks";
+        final String CLASSES = "Classes tasks";
         return new ConsoleMenuBuilder(prnTitle)
-                .AddMenuItem("1", STRING_TASKSS, lesson3.strings.SubMenuBuilder.getMenu(prnTitle + " -> " + STRING_TASKSS), false)
-                .AddMenuItem("1", CLASS_TASKS, lesson3.strings.SubMenuBuilder.getMenu(prnTitle + " -> " + CLASS_TASKS), false)
+                .AddMenuItem("1", STRINGS, lesson3.strings.SubMenuBuilder.getMenu(prnTitle + " -> " + STRINGS), false)
+                .AddMenuItem("2", CLASSES, lesson3.classes.SubMenuBuilder.getMenu(prnTitle + " -> " + CLASSES), false)
                 .AddMenuItem("0", "Go to previous menu", null, true);
     }
 }
