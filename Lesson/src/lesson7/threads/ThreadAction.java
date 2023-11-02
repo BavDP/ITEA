@@ -2,6 +2,8 @@ package lesson7.threads;
 
 import MenuBuilder.AbstractAction;
 
+import java.io.FileNotFoundException;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class ThreadAction extends AbstractAction {
@@ -15,23 +17,31 @@ public class ThreadAction extends AbstractAction {
     // wstat <filename> - посчитать статистику по словам
     // mrepl:<fromWord1>,<fromWord2>:<toWord1>,<toWord2> <filename> <statFile> - замена слов в файле filename и вывод статистики в statFile
     // wstat+<fromWord1>,<fromWord2>:<toWord1>,<toWord2> <filename>+wstat <filename> <statFile> -
-    //     подсчитать статистику, заменить слова и опять подсчитать статискику
+    //     подсчитать статистику, заменить слова и опять подсчитать статистику
     // Разделяемым ресурсом для потоков будет файл-источник текста
     // Чтоб было веселее, то каждый поток будет читать по 30 строк файла в память и пока будет
     // выполнять свою работу над прочитанным текстом, допускать второй поток к работе с указанным файлом
     // Вроде не должно быть сложно... вот только для volatile пока не вижу тут применения :(
     // Поехали!!!
-    // Контроль правильности введеной команды не проверяю, ибо не хочу...
+    // Контроль правильности введёной команды не проверяю, ибо не хочу...
 
     @Override
     public void doAction() {
-        Scanner sc = new Scanner(System.in);
+        /*Scanner sc = new Scanner(System.in);
         System.out.print("Input your command: ");
         String command = sc.nextLine();
         String[] splitCommand = command.split(" ");
-        String fileName = splitCommand[1];
-
-        command = splitCommand[0];
-
+        Path fileName = Path.of(splitCommand[1]);
+        Wstat wstat = new Wstat(fileName, Path.of(""));
+        wstat.run();
+        command = splitCommand[0];*/
+        String[] from = {"non"};
+        String[] to = {"NNOONN"};
+        Wrepl wrepl = new Wrepl(10, Path.of("M:\\sample3.txt"), from, to);
+        try {
+            wrepl.run();
+        } catch (FileNotFoundException e) {
+            e.getStackTrace();
+        }
     }
 }
