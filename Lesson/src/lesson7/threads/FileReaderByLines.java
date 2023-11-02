@@ -1,46 +1,38 @@
 package lesson7.threads;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class FileReaderByLines {
     private int countReadLine;
-    private Path filePath;
+    private final Stream<String> fileLines;
 
-    public FileReaderByLines(int countReadLine, Path filePath) {
+    public FileReaderByLines(int countReadLine, Stream<String> fileLines) {
         this.countReadLine = countReadLine;
-        this.filePath = filePath;
+        this.fileLines = fileLines;
     }
     protected void readFileByCertainCountLine() throws FileNotFoundException {
-        int lineCnt = 0;
+        final int[] lineCnt = {0};
+        int preLineCnt = 0;
         Object processReadDataResult = null;
-        RandomAccessFile ifs = new RandomAccessFile(this.filePath.toString(), "r");
-        try {
-            String line = "";
-            do{
+        String line = "";
+        do {
+            synchronized (fileLines) {
+                preLineCnt = lineCnt[0];
+                doStartReadFileBlock();
                 StringBuilder readBuffer = new StringBuilder();
-                while (true) {
-                    line = ifs.readLine();
-                    if (line == null) break;
-                    readBuffer.append(line);
-                    lineCnt++;
-                    if (lineCnt >= countReadLine) break;
-                }
+                fileLines.skip(lineCnt[0]).limit(countReadLine).forEach(fileLine -> {
+                    readBuffer.append(fileLine);
+                    lineCnt[0]++;
+                });
                 processReadDataResult = doProcessReadData(readBuffer.toString(), processReadDataResult);
-                lineCnt = 0;
-            } while(line!=null);
-            doReadDataFinished(processReadDataResult);
-        } catch (IOException e) {
-            e.getStackTrace();
-        } finally {
-            try {
-                ifs.close();
-            } catch (IOException e) {
-                e.getStackTrace();
             }
-        }
+        } while(preLineCnt < lineCnt[0]);
+        doReadDataFinished(processReadDataResult);
     }
 
     protected Object doProcessReadData(String readData, Object preProcessReadDataResult) {
@@ -48,4 +40,6 @@ public class FileReaderByLines {
     }
 
     protected void doReadDataFinished(Object processReadDataResult) {}
+
+    protected void doStartReadFileBlock() {}
 }

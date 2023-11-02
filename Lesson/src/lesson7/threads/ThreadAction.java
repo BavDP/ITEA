@@ -3,10 +3,14 @@ package lesson7.threads;
 import MenuBuilder.AbstractAction;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class ThreadAction extends AbstractAction {
+    final int READ_LINE_COUNT = 10;
     // программа создает поток-сервер, который принимает
     // команды с консоли от пользователя. Поддерживаются 2 команды
     // 1. wstat - статистика по словам в указанном файле, длина которых больше 2 символов
@@ -35,13 +39,35 @@ public class ThreadAction extends AbstractAction {
         Wstat wstat = new Wstat(fileName, Path.of(""));
         wstat.run();
         command = splitCommand[0];*/
-        String[] from = {"non"};
-        String[] to = {"NNOONN"};
-        Wrepl wrepl = new Wrepl(10, Path.of("M:\\sample3.txt"), from, to);
-        try {
-            wrepl.run();
-        } catch (FileNotFoundException e) {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Path to file: ");
+        String path = sc.nextLine();
+        try(Stream<String> fileLines = Files.lines(Path.of(path))) {
+            Thread wstatThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Wstat wstat = new Wstat(READ_LINE_COUNT, fileLines);
+                    wstat.run();
+                }
+            });
+            wstatThread.run();
+        } catch (IOException e) {
             e.getStackTrace();
         }
+
+        /*Thread wreplThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String[] from = {"non"};
+                String[] to = {"NNOONN"};
+                Wrepl wrepl = new Wrepl(10, Path.of(path), from, to);
+                try {
+                    wrepl.run();
+                } catch (FileNotFoundException e) {
+                    e.getStackTrace();
+                }
+            }
+        });*/
+        // wreplThread.run();
     }
 }
