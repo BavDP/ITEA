@@ -26,9 +26,11 @@ public class WaitSyncFileReaderByLines {
     protected void readFileByCertainCountLine() throws FileNotFoundException {
         final int[] lineCnt = {1};
         int preLineCnt = 0;
-        ++WaitSyncFileReaderByLines.counter;
-        Object processReadDataResult = null;
         Object syncObj = WaitSyncFileReaderByLines.synchObjects.get(pathToFile);
+        synchronized (syncObj) {
+            WaitSyncFileReaderByLines.counter++;
+        }
+        Object processReadDataResult = null;
         do {
             try (Stream<String> fileLines = Files.lines(Path.of(pathToFile))) {
                 synchronized (syncObj) {
@@ -61,7 +63,7 @@ public class WaitSyncFileReaderByLines {
         } while(preLineCnt < lineCnt[0]);
         synchronized (syncObj) {
             syncObj.notify();
-            --WaitSyncFileReaderByLines.counter;
+            WaitSyncFileReaderByLines.counter--;
         }
         doReadDataFinished(processReadDataResult);
     }
