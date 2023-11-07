@@ -3,10 +3,8 @@ package lesson7.threads.syncWithWaitNotify;
 import lesson7.threads.CsvFileLine;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 public class CalcYearProfit extends WaitSyncFileReaderByLines {
     private final int yearForCalcProfit;

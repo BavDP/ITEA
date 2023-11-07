@@ -3,7 +3,6 @@ package lesson7.threads.syncSimple;
 import lesson7.threads.CsvFileLine;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.*;
 
