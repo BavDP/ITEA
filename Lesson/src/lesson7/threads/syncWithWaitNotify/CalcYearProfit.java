@@ -1,13 +1,14 @@
-package lesson7.threads;
+package lesson7.threads.syncWithWaitNotify;
+
+import lesson7.threads.CsvFileLine;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
-import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
-public class CalcYearProfit extends FileReaderByLines {
+public class CalcYearProfit extends WaitSyncFileReaderByLines {
     /// файл, текст которого будет анализироваться
     private int readLineCount;
     private final int yearForCalcProfit;

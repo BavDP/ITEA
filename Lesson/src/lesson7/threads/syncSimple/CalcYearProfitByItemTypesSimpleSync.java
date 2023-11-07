@@ -1,20 +1,22 @@
-package lesson7.threads;
+package lesson7.threads.syncSimple;
+
+import lesson7.threads.CsvFileLine;
+import lesson7.threads.syncSimple.SimpleSyncFileReaderByLines;
 
 import java.io.FileNotFoundException;
 import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CalcYearProfitByItemTypes extends FileReaderByLines{
+public class CalcYearProfitByItemTypesSimpleSync extends SimpleSyncFileReaderByLines {
     /// файл, текст которого будет анализироваться
     private int readLineCount;
     private final int yearForCalcProfit;
 
-    public CalcYearProfitByItemTypes(int readLineCount, String pathToFile, int yearForCalcProfit) {
+    public CalcYearProfitByItemTypesSimpleSync(int readLineCount, String pathToFile, int yearForCalcProfit) {
         super(readLineCount, pathToFile);
         this.yearForCalcProfit = yearForCalcProfit;
     }
