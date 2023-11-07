@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class WaitSyncFileReaderByLines {
+    public static volatile int readLinesCounter = 0;
     public static final String CSV_DELIMITER = ",";
     private static final HashMap<String, Object> synchObjects = new HashMap<>();
     private static final AtomicInteger counter = new AtomicInteger(0);
@@ -59,6 +60,7 @@ public class WaitSyncFileReaderByLines {
                 e.getStackTrace();
                 break;
             }
+            WaitSyncFileReaderByLines.readLinesCounter = lineCnt[0];
         } while(preLineCnt < lineCnt[0]);
         synchronized (syncObj) {
             syncObj.notify();

@@ -38,8 +38,11 @@ public class WaitSyncThreadAction extends AbstractAction {
         calcYearProfitPerItemTypeThread.start();
         try {
             // ожидаем пока все потоки завершат свою работу
-            calcYearProfitThread.join();
-            calcYearProfitPerItemTypeThread.join();
+            while(calcYearProfitThread.isAlive() || calcYearProfitPerItemTypeThread.isAlive()) {
+                calcYearProfitThread.join(2000);
+                calcYearProfitPerItemTypeThread.join(2000);
+                System.out.println("readed: " + WaitSyncFileReaderByLines.readLinesCounter / 2);
+            }
         } catch (InterruptedException e) {
             e.getStackTrace();
         }
