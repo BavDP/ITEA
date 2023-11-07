@@ -18,12 +18,9 @@ public class SimpleSyncThreadAction extends AbstractAction {
         System.out.print("Enter profit year: ");
         int profitYear = sc.nextInt();
         // расчет годовой выручки за указанный год
-        Thread calcYearProfitThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                CalcYearProfit calcYearProfit = new CalcYearProfit(READ_LINE_COUNT, path, profitYear, profitCountry);
-                calcYearProfit.run();
-            }
+        Thread calcYearProfitThread = new Thread(() -> {
+            CalcYearProfit calcYearProfit = new CalcYearProfit(READ_LINE_COUNT, path, profitYear, profitCountry);
+            calcYearProfit.run();
         });
         try {
             calcYearProfitThread.join();
@@ -32,12 +29,9 @@ public class SimpleSyncThreadAction extends AbstractAction {
         }
         // расчет годовой выручки за указанный год для указанной страны с разбивкой по
         // типу товара
-        Thread calcYearProfitPerItemTypeThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                CalcYearProfitByItemTypesSimpleSync calc = new CalcYearProfitByItemTypesSimpleSync(READ_LINE_COUNT, path, profitYear);
-                calc.run();
-            }
+        Thread calcYearProfitPerItemTypeThread = new Thread(() -> {
+            CalcYearProfitByItemTypesSimpleSync calc = new CalcYearProfitByItemTypesSimpleSync(READ_LINE_COUNT, path, profitYear);
+            calc.run();
         });
         // запуск потоков
         calcYearProfitThread.start();

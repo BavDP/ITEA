@@ -12,7 +12,7 @@ import java.util.stream.Stream;
 
 public class SimpleSyncFileReaderByLines {
     public static final String CSV_DELIMITER = ",";
-    private static final HashMap<String, Object> synchObjects = new HashMap();
+    private static final HashMap<String, Object> synchObjects = new HashMap<>();
     private final int countReadLine;
     private final String pathToFile;
 
@@ -23,16 +23,15 @@ public class SimpleSyncFileReaderByLines {
     }
     protected void readFileByCertainCountLine() throws FileNotFoundException {
         final int[] lineCnt = {1};
-        int preLineCnt = 0;
+        int preLineCnt;
         Object processReadDataResult = null;
-        String line = "";
         Object syncObj = SimpleSyncFileReaderByLines.synchObjects.get(pathToFile);
         do {
             try (Stream<String> fileLines = Files.lines(Path.of(pathToFile))) {
                 synchronized (syncObj) {
                     preLineCnt = lineCnt[0];
                     doStartReadFileBlock();
-                    ArrayList<CsvFileLine> readBuffer = new ArrayList<CsvFileLine>();
+                    ArrayList<CsvFileLine> readBuffer = new ArrayList<>();
                     fileLines.skip(lineCnt[0]).limit(countReadLine).forEach(fileLine -> {
                         try {
                             readBuffer.add(new CsvFileLine(fileLine, SimpleSyncFileReaderByLines.CSV_DELIMITER));

@@ -9,8 +9,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 public class CalcYearProfit extends WaitSyncFileReaderByLines {
-    /// файл, текст которого будет анализироваться
-    private int readLineCount;
     private final int yearForCalcProfit;
     private final String countryForCalcProfit;
 
@@ -21,7 +19,6 @@ public class CalcYearProfit extends WaitSyncFileReaderByLines {
     }
     /// запуск команды на выполнение
     public void run() {
-        LinkedHashMap<String, Long> stat = new LinkedHashMap<>();
         try {
             readFileByCertainCountLine();
         } catch (FileNotFoundException | SecurityException e) {
@@ -31,18 +28,16 @@ public class CalcYearProfit extends WaitSyncFileReaderByLines {
 
     @Override
     protected Object doProcessReadData(ArrayList<CsvFileLine> readData, Object preProcessReadDataResult) {
-        LinkedHashMap<String, Long> stat = new LinkedHashMap<>();
         return this.calcYearProfit(readData, preProcessReadDataResult != null ? (Double)preProcessReadDataResult: null);
     }
 
     @Override
     protected void doReadDataFinished(Object processReadDataResult) {
         System.out.println(" ********* Profit of year result ***********");
-        this.writeStat((Double)processReadDataResult, Path.of(""));
+        this.writeStat((Double)processReadDataResult);
     }
 
     private Double calcYearProfit(ArrayList<CsvFileLine> csvLine, Double prevValue) {
-        LinkedHashMap<String, Long> res = new LinkedHashMap<>();
         System.out.println("calcYearProfit processing next text block...");
         double totalProfitOfYear = csvLine.stream()
                 // рассматриваем только записи с продажами за указанный год
@@ -53,7 +48,7 @@ public class CalcYearProfit extends WaitSyncFileReaderByLines {
         return totalProfitOfYear + (prevValue != null ? prevValue : 0);
     }
 
-    private void writeStat(Double stat, Path outputFile) {
+    private void writeStat(Double stat) {
         DecimalFormat formatter = new DecimalFormat("#####.##");
         System.out.println("Total profit of " + yearForCalcProfit + " is: " + formatter.format(stat));
     }

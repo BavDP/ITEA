@@ -1,7 +1,6 @@
 package lesson7.threads;
 
 import MenuBuilder.ConsoleMenuBuilder;
-import lesson5.generics.actions.CountUniqueElemsAction;
 import lesson7.threads.syncSimple.SimpleSyncThreadAction;
 import lesson7.threads.syncWithWaitNotify.WaitSyncThreadAction;
 

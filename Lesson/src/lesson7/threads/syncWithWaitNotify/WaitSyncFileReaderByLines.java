@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 public class WaitSyncFileReaderByLines {
     public static final String CSV_DELIMITER = ",";
-    private static final HashMap<String, Object> synchObjects = new HashMap();
+    private static final HashMap<String, Object> synchObjects = new HashMap<>();
     private static volatile int counter = 0;
     private final int countReadLine;
     private final String pathToFile;
@@ -39,7 +39,7 @@ public class WaitSyncFileReaderByLines {
                         }
                         preLineCnt = lineCnt[0];
                         doStartReadFileBlock();
-                        ArrayList<CsvFileLine> readBuffer = new ArrayList<CsvFileLine>();
+                        ArrayList<CsvFileLine> readBuffer = new ArrayList<>();
                         fileLines.skip(lineCnt[0]).limit(countReadLine).forEach(fileLine -> {
                             try {
                                 readBuffer.add(new CsvFileLine(fileLine, WaitSyncFileReaderByLines.CSV_DELIMITER));
