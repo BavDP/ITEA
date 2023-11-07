@@ -9,12 +9,13 @@ import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
 public class WaitSyncFileReaderByLines {
     public static final String CSV_DELIMITER = ",";
     private static final HashMap<String, Object> synchObjects = new HashMap<>();
-    private static volatile int counter = 0;
+    private static final AtomicInteger counter = new AtomicInteger(0);
     private final int countReadLine;
     private final String pathToFile;
 
@@ -27,16 +28,14 @@ public class WaitSyncFileReaderByLines {
         final int[] lineCnt = {1};
         int preLineCnt = 0;
         Object syncObj = WaitSyncFileReaderByLines.synchObjects.get(pathToFile);
-        synchronized (syncObj) {
-            WaitSyncFileReaderByLines.counter++;
-        }
+        WaitSyncFileReaderByLines.counter.incrementAndGet();
         Object processReadDataResult = null;
         do {
             try (Stream<String> fileLines = Files.lines(Path.of(pathToFile))) {
                 synchronized (syncObj) {
                     try {
                         syncObj.notify();
-                        if (WaitSyncFileReaderByLines.counter > 1) {
+                        if (WaitSyncFileReaderByLines.counter.get() > 1) {
                             syncObj.wait();
                         }
                         preLineCnt = lineCnt[0];
@@ -63,8 +62,8 @@ public class WaitSyncFileReaderByLines {
         } while(preLineCnt < lineCnt[0]);
         synchronized (syncObj) {
             syncObj.notify();
-            WaitSyncFileReaderByLines.counter--;
         }
+        WaitSyncFileReaderByLines.counter.decrementAndGet();
         doReadDataFinished(processReadDataResult);
     }
 
