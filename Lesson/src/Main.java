@@ -11,6 +11,7 @@ public class Main {
         final String LESSON5 = "Lesson #5";
         final String LESSON7 = "Lesson #7";
         final String LESSON12 = "Lesson #12";
+        final String LESSON13 = "Lesson #13";
         ConsoleMenuBuilder menuBuilder = ConsoleMenuBuilder.getMainMenuBuilder();
         menuBuilder
                 .AddMenuItem("1", LESSON2, lesson2.SubMenuBuilder.getMenu(LESSON2), false)
@@ -19,6 +20,7 @@ public class Main {
                 .AddMenuItem("4", LESSON5, lesson5.SubMenuBuilder.getMenu(LESSON5), false)
                 .AddMenuItem("5", LESSON7, lesson7.SubMenuBuilder.getMenu(LESSON7), false)
                 .AddMenuItem("6", LESSON12, lesson12.SubMenuBuilder.getMenu(LESSON12), false)
+                .AddMenuItem("7", LESSON13, lesson13.SubMenuBuilder.getMenu(LESSON13), false)
                 .AddMenuItem("exit", "Exit from program", null, true)
                 .Run();
 
