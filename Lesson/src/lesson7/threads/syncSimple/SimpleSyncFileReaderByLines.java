@@ -1,42 +1,40 @@
-package lesson7.threads;
+package lesson7.threads.syncSimple;
+
+import lesson7.threads.CsvFileLine;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-public class FileReaderByLines {
+public class SimpleSyncFileReaderByLines {
     public static final String CSV_DELIMITER = ",";
-    private static HashMap<String, Object> synchObjects = new HashMap();
-    private int countReadLine;
-    private String pathToFile;
+    private static final HashMap<String, Object> synchObjects = new HashMap<>();
+    private final int countReadLine;
+    private final String pathToFile;
 
-    public FileReaderByLines(int countReadLine, String pathToFile) {
+    public SimpleSyncFileReaderByLines(int countReadLine, String pathToFile) {
         this.countReadLine = countReadLine;
         this.pathToFile = pathToFile;
-        FileReaderByLines.synchObjects.computeIfAbsent(pathToFile, k -> new Object());
+        SimpleSyncFileReaderByLines.synchObjects.computeIfAbsent(pathToFile, k -> new Object());
     }
     protected void readFileByCertainCountLine() throws FileNotFoundException {
         final int[] lineCnt = {1};
-        int preLineCnt = 0;
+        int preLineCnt;
         Object processReadDataResult = null;
-        String line = "";
+        Object syncObj = SimpleSyncFileReaderByLines.synchObjects.get(pathToFile);
         do {
             try (Stream<String> fileLines = Files.lines(Path.of(pathToFile))) {
-                synchronized (FileReaderByLines.synchObjects.get(pathToFile)) {
+                synchronized (syncObj) {
                     preLineCnt = lineCnt[0];
                     doStartReadFileBlock();
-                    ArrayList<CsvFileLine> readBuffer = new ArrayList<CsvFileLine>();
+                    ArrayList<CsvFileLine> readBuffer = new ArrayList<>();
                     fileLines.skip(lineCnt[0]).limit(countReadLine).forEach(fileLine -> {
                         try {
-                            readBuffer.add(new CsvFileLine(fileLine, FileReaderByLines.CSV_DELIMITER));
+                            readBuffer.add(new CsvFileLine(fileLine, SimpleSyncFileReaderByLines.CSV_DELIMITER));
                         } catch (ParseException e) {
                             e.getStackTrace();
                         }
@@ -46,6 +44,7 @@ public class FileReaderByLines {
                 }
             } catch (IOException e) {
                 e.getStackTrace();
+                break;
             }
         } while(preLineCnt < lineCnt[0]);
         doReadDataFinished(processReadDataResult);

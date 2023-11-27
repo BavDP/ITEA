@@ -1,26 +1,22 @@
-package lesson7.threads;
+package lesson7.threads.syncWithWaitNotify;
+
+import lesson7.threads.CsvFileLine;
 
 import java.io.FileNotFoundException;
-import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CalcYearProfitByItemTypes extends FileReaderByLines{
-    /// файл, текст которого будет анализироваться
-    private int readLineCount;
+public class CalcYearProfitByItemTypesWaitSync extends WaitSyncFileReaderByLines {
     private final int yearForCalcProfit;
 
-    public CalcYearProfitByItemTypes(int readLineCount, String pathToFile, int yearForCalcProfit) {
+    public CalcYearProfitByItemTypesWaitSync(int readLineCount, String pathToFile, int yearForCalcProfit) {
         super(readLineCount, pathToFile);
         this.yearForCalcProfit = yearForCalcProfit;
     }
     /// запуск команды на выполнение
     public void run() {
-        LinkedHashMap<String, Long> stat = new LinkedHashMap<>();
         try {
             readFileByCertainCountLine();
         } catch (FileNotFoundException | SecurityException e) {
@@ -30,18 +26,16 @@ public class CalcYearProfitByItemTypes extends FileReaderByLines{
 
     @Override
     protected Object doProcessReadData(ArrayList<CsvFileLine> readData, Object preProcessReadDataResult) {
-        LinkedHashMap<String, Long> stat = new LinkedHashMap<>();
         return this.calcYearProfit(readData, preProcessReadDataResult != null ? (Map<String, Double>)preProcessReadDataResult: null);
     }
 
     @Override
     protected void doReadDataFinished(Object processReadDataResult) {
         System.out.println(" ********* Profit of year by item types result ***********");
-        this.writeStat((Map<String, Double>)processReadDataResult, Path.of(""));
+        this.writeStat((Map<String, Double>)processReadDataResult);
     }
 
     private Map<String, Double> calcYearProfit(ArrayList<CsvFileLine> csvLine, Map<String, Double> prevValue) {
-        LinkedHashMap<String, Long> res = new LinkedHashMap<>();
         System.out.println("    calcYearProfitPerItemType processing next text block...");
         Map<String, Double> totalProfitOfYear = csvLine.stream()
                 // рассматриваем только записи с продажами за указанный год
@@ -61,11 +55,9 @@ public class CalcYearProfitByItemTypes extends FileReaderByLines{
         return totalProfitOfYear;
     }
 
-    private void writeStat(Map<String, Double> stat, Path outputFile) {
+    private void writeStat(Map<String, Double> stat) {
         DecimalFormat formatter = new DecimalFormat("#####.##");
         System.out.println("Total profit of year per item type: ");
-        stat.forEach((key, value) -> {
-            System.out.println(key + ": " + formatter.format(value));
-        });
+        stat.forEach((key, value) -> System.out.println(key + ": " + formatter.format(value)));
     }
 }
